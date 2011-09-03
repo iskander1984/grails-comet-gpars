@@ -4,11 +4,12 @@ import groovyx.gpars.actor.DefaultActor
 
 class ChatClient extends DefaultActor {
     def String login
+	def out
 
     void act() {        
         loop {
 			react {message ->
-				println '' + login + ': ' + message
+				out << '' + login + ': ' + message
 			}
         }
     }  

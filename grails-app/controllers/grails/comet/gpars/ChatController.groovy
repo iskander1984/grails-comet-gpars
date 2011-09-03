@@ -8,7 +8,7 @@ class ChatController {
     def index() { }
 	
 	def subscribe = {
-		def chatClient = new ChatClient().subscribeTo(chatChannel)
+		def chatClient = new ChatClient(out:response).subscribeTo(chatChannel)
 		render 'You have been subscribed'
 	}
 		
