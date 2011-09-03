@@ -16,6 +16,11 @@
 			}
 			req.send(null);
 		});
+		
+		function sendSuccess() {				
+			document.getElementById("chatMessage").value = "";			
+		}
+		
 	</script>
 	</head>
 	
@@ -23,9 +28,10 @@
 	<body>
 		<g:textArea id="chatWindow" name="chatWindow" rows="2" cols="20" value="Messages should be here..." readonly="readonly"/>
 		<br/>
-		<g:form name="messageForm">
-			<g:textField name="message" id="message"/> &nbsp;
-			<g:actionSubmit value="Send" />
-		</g:form>
+		
+		<g:formRemote name="chatForm" url="[controller:'chat',action:'sendMessage']" onSuccess="sendSuccess();">
+			<input type="text" name="chatMessage" id="chatMessage" />&nbsp;
+			<input type="submit" value="Send" />
+		</g:formRemote >
 	</body>
 </html>

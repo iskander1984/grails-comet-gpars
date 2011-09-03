@@ -2,6 +2,7 @@ package grails.comet.gpars
 
 import chat.ChatChannel
 import chat.ChatClient
+import grails.converters.*
 
 class ChatController {
 	static ChatChannel chatChannel = new ChatChannel();
@@ -12,4 +13,9 @@ class ChatController {
 		render 'You have been subscribed'
 	}
 		
+	def sendMessage = {
+		chatChannel << params.chatMessage
+		println params.chatMessage
+		render ' ' 
+	}
 }
