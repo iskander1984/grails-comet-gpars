@@ -1,3 +1,5 @@
+package chat
+
 import groovyx.gpars.actor.DefaultActor
 
 class ChatChannel extends DefaultActor {    

@@ -1,3 +1,5 @@
+package chat
+
 import groovyx.gpars.actor.Actor
 
 class UnsubscribeMessage {
