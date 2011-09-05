@@ -9,7 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 
 class ChatClient {
-
+	def login
 	private messages = new LinkedBlockingQueue<String>()
 	private client = new ClientActor()	
 	

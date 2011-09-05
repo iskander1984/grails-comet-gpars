@@ -19,8 +19,9 @@ class ChatController {
 		if (!session.chatClient){
 			session.chatClient = [:]
 		}
+
 		if (!session.chatClient[chatName]){
-			 session.chatClient[chatName] = new ChatClient()
+			 session.chatClient[chatName] = new ChatClient(login: session.id.substring(0, 4))
 			 session.chatClient[chatName].start()
 			 session.chatClient[chatName].subscribeTo(servletContext['channels'][chatName])
 		}
@@ -37,7 +38,8 @@ class ChatController {
 	}
 		
 	def sendMessage = {
-		servletContext['channels'][params.chatName] << params.chatMessage
+		def chatName = params.chatName
+		servletContext['channels'][chatName] << session.chatClient[chatName].login + ' - ' + params.chatMessage
 		render ' ' 
 	}
 	
