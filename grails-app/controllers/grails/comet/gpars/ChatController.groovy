@@ -6,26 +6,39 @@ import chat.GetNextMessage
 import grails.converters.*
 
 class ChatController {
-	static ChatChannel chatChannel = new ChatChannel();
-	static {
-		chatChannel.start()
+	static allowedMethods = [create:'POST']
+		
+    def index() { redirect(action: "list", params: params)}
+	
+	def list() {
+		render (view: "list", model: [channels: servletContext['channels'].keySet])
 	}
-    def index() { }
 	
 	def subscribe = {
-		if (!session.chatClient){
-			 session.chatClient = new ChatClient()
-			 session.chatClient.start()
-			 session.chatClient.subscribeTo(chatChannel)
+		def chatName = params.chatName
+		if (!session.chatClient[chatName]){
+			 session.chatClient[chatName] = new ChatClient()
+			 session.chatClient[chatName].start()
+			 session.chatClient[chatName].subscribeTo(servletContext['channels'][chatName])
 		}
 		
 		def message = session.chatClient.getLastMessages()
 		
 		render(message)
 	}
+	
+	def create = {
+		def chatName = params.chatName
+		def chatChannel = new ChatChannel(name: chatName);
+		chatChannel.start()
+		servletContext['channels'][chatName] = chatChannel
+		
+		redirect(action: "list", params: params)
+	}
 		
 	def sendMessage = {
 		chatChannel << params.chatMessage
 		render ' ' 
 	}
+
 }

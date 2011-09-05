@@ -2,7 +2,8 @@ package chat
 
 import groovyx.gpars.actor.DefaultActor
 
-class ChatChannel extends DefaultActor {    
+class ChatChannel extends DefaultActor { 
+	def name   
     def clients = []
     
     void act() {        
@@ -21,4 +22,8 @@ class ChatChannel extends DefaultActor {
             }
         }
     }
+	
+	def containsClient(client){
+		return clients.contains(client)
+	}
 }
