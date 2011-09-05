@@ -9,7 +9,10 @@
 			$.ajax({
 				url: "pullMessages?chatName=${chatName}",
 				success: function(data){
-					$("#chatWindow").val(data);
+					$.each(data, function(){
+						$("#chatWindow").val($("#chatWindow").val() + "\n" + this);
+					});
+					
 					longPoolRequest();
 				}
 			});
@@ -18,9 +21,8 @@
 			setTimeout('longPoolRequest()', 1000);
 		});
 		
-		function sendSuccess() {
-			var chatMessageInput = document.getElementById("chatMessage");
-			chatMessageInput.value = "";	
+		function clearChatMessageBox(){
+			$("#chatMessage").val("");
 		}
 		
 	</script>
@@ -28,7 +30,7 @@
 	<body>
 		<g:textArea id="chatWindow" name="chatWindow" rows="2" cols="20" value="Messages should be here..." readonly="readonly"/>
 		<br/>
-		<g:formRemote name="chatForm" url="[controller:'chat',action:'sendMessage']" onSuccess="sendSuccess()">
+		<g:formRemote name="chatForm" url="[controller:'chat',action:'sendMessage']" onSuccess="clearChatMessageBox()" before="if (!\$('#chatMessage').val()) {return false;}">
 			<g:hiddenField name="chatName" value="${chatName}" />
 			<input type="text" name="chatMessage" id="chatMessage" />&nbsp;
 			<input type="submit" value="Send" />

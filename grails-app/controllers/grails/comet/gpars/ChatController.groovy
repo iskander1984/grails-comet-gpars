@@ -48,7 +48,7 @@ class ChatController {
 	
 	def pullMessages = {
 		def messages = session.chatClient[params.chatName].getLastMessages(30000)
-		render messages
+		render messages as JSON
 	}
 
 }
