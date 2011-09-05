@@ -8,17 +8,16 @@ class ChatChannel extends DefaultActor {
     void act() {        
         loop {
             react {message ->
-                println 'Got message: ' + message
                 switch (message) {
                     case SubscribeMessage:
-                        clients << message.client                        
+                        clients << message.client
                         break
                     case UnsubscribeMessage:
                         clients.remove(message.client)
                         break
-                    default: clients.each {it << message}
+                    default:
+						clients.each {it << message}
                 }   
-                println 'Subscribers: ' + clients                     
             }
         }
     }

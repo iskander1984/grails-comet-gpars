@@ -1,24 +1,32 @@
 package chat
-import groovyx.gpars.actor.Actor
+
+import javax.servlet.http.HttpServletResponse
 import groovyx.gpars.actor.DefaultActor
+import groovyx.gpars.actor.Actor
+import chat.GetNextMessage
+import chat.PutMessage
 
 class ChatClient extends DefaultActor {
-    def String login
-	def out
-
+    String login
+	def messages = new ArrayList()
     void act() {        
         loop {
 			react {message ->
-				out << '' + login + ': ' + message
+				messages << message
 			}
         }
     }  
+	
+	def getLastMessages(){
+		messages
+	}
 
 	def subscribeTo(Actor channel) {
-		channel << new SubscribeMessage(this)
+		channel << new SubscribeMessage(client: this)
 	}
 	
 	def unsubscribeFrom(Actor channel) {
-		channel << new UnsubscribeMessage(this)
+		channel << new UnsubscribeMessage(client: this)
 	}
+	
 }
