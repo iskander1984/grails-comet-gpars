@@ -19,7 +19,7 @@ class ChatController {
 			 session.chatClient.subscribeTo(chatChannel)
 		}
 		
-		def message = session.chatClient.getLastMessages()
+		def message = session.chatClient.getLastMessages(30000)
 		
 		render(message)
 	}
