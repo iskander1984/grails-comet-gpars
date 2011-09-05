@@ -1,7 +1,7 @@
 class BootStrap {
 
     def init = { servletContext ->
-		servletContext['channels'] = new HashMap();
+		servletContext['channels'] = [:];
     }
     def destroy = {
     }

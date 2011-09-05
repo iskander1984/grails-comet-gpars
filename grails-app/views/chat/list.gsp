@@ -7,14 +7,16 @@
 	</head>
 	<body>
 		Channels:
-		<g:each in="${channels}">
-     		<p>Channel Name: ${it}</p>
+		<g:each in="${channels}" var="channel">
+     		<p>Channel Name: ${channel}&nbsp; 
+     		<g:remoteLink action="subscribe" params="[chatName: channel]">Subscribe</g:remoteLink>
+     		&nbsp; <a href="<g:createLink action="chat" params="[chatName: channel]"/>">Enter Chat Room</a></p>
 		</g:each>
 		<br/>
 		Create another chat:
-		<g:form name="chatRegistration" url="[controller:'chat',action:'create']">	
+		<g:form name="chatRegistration" >	
 			<g:textField name="chatName" />
-			<g:actionSubmit value="Create Chat" />
+			<g:actionSubmit value="Create Chat" action="create"/>
 		</g:form>
 	</body>
 </html>

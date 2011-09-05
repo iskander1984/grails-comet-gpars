@@ -11,20 +11,20 @@ class ChatController {
     def index() { redirect(action: "list", params: params)}
 	
 	def list() {
-		render (view: "list", model: [channels: servletContext['channels'].keySet])
+		render (view: "list", model: [channels: servletContext['channels'].keySet()])
 	}
 	
 	def subscribe = {
 		def chatName = params.chatName
+		if (!session.chatClient){
+			session.chatClient = [:]
+		}
 		if (!session.chatClient[chatName]){
 			 session.chatClient[chatName] = new ChatClient()
 			 session.chatClient[chatName].start()
 			 session.chatClient[chatName].subscribeTo(servletContext['channels'][chatName])
 		}
-		
-		def message = session.chatClient.getLastMessages(30000)
-		
-		render(message)
+		render ''
 	}
 	
 	def create = {
@@ -33,12 +33,22 @@ class ChatController {
 		chatChannel.start()
 		servletContext['channels'][chatName] = chatChannel
 		
-		redirect(action: "list", params: params)
+		render (action: "list", view: "list")
 	}
 		
 	def sendMessage = {
-		chatChannel << params.chatMessage
+		servletContext['channels'][params.chatName] << params.chatMessage
 		render ' ' 
+	}
+	
+	def chat = {
+		
+		render(view: "chat", model: [chatName: params.chatName])
+	}
+	
+	def pullMessages = {
+		def messages = session.chatClient[params.chatName].getLastMessages(30000)
+		render messages
 	}
 
 }
