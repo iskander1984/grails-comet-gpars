@@ -22,7 +22,7 @@ class ChatController {
 			 session.chatClient[chatName].subscribeTo(servletContext['channels'][chatName])
 		}
 		
-		def message = session.chatClient.getLastMessages()
+		def message = session.chatClient.getLastMessages(30000)
 		
 		render(message)
 	}
