@@ -43,6 +43,7 @@ function registerGCometComponents(){
 
 function registerGCometComponent(id, updateHandler){
 	var component = new GCometComponent(id, updateHandler);
+	$.ajax({url: "subscribe"});
 	components.push(component);
 }
 
