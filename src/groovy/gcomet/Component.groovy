@@ -4,7 +4,7 @@ import groovyx.gpars.actor.DefaultActor
 
 class Component extends DefaultActor {
 
-	private ComponentClient[] clients = []	
+	def clients = []	
 
 	void act() {
 		loop {
@@ -17,7 +17,7 @@ class Component extends DefaultActor {
 						clients.remove(message.client)
 						break
 					case UpdateStateMessage:
-						clients.each {it << message}
+						clients.each {it << message.state}
 						break
 				}
 			}
@@ -25,14 +25,14 @@ class Component extends DefaultActor {
 	}
 	
 	def register(ComponentClient client) {
-		this << new RegisterMessage(client)
+		this << new RegisterMessage(client: client)
 	}
 	
 	def unregister(ComponentClient client) {
-		this << new UnregisterMessage(client)
+		this << new UnregisterMessage(client: client)
 	}
 	
 	def update(ComponentState state) {
-		this << new UpdateStateMessage(state.clone())
+		this << new UpdateStateMessage(state: state.clone())
 	}
 }

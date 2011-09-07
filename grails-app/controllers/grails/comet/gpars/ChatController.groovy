@@ -1,37 +1,44 @@
 package grails.comet.gpars
 
-import gpars.Component
-import gpars.ComponentClient
+import gcomet.Component
+import gcomet.ComponentClient
+import gcomet.ComponentState
 import grails.converters.*
 
 class ChatController {
 	static allowedMethods = [create:'POST']
 		
-	Component chat
+	Component chatComponent
 	
 	def subscribe = {
 		if (!session.chatClient){
 			 session.chatClient = new ComponentClient()
 			 session.chatClient.start()
-			 chat.register(session.chatClient)
+			 chatComponent.register(session.chatClient)
 		}
-		render ''
+		render ' '
 	}
 		
 	def sendMessage = {
 		def state = new ComponentState()
 		state.login = session.id.substring(0, 4)
 		state.message = params.chatMessage
-		chat.update(state)
+		chatComponent.update(state)
 		render ' '
 	}
 	
 	def pullMessages = {
 		def states = session.chatClient.getStates(30000)
-		render states as JSON
+		render (states as JSON).toString()
 	}
 	
-//    def index() { redirect(action: "list", params: params)}
+    def index() { redirect(action: "chat", params: params)}
+	
+	def chat = {
+		if (!chatComponent.isActive()) chatComponent.start()
+		render(view: "chat")
+	}
+
 	
 //	def list() {
 //		render (view: "list", model: [channels: servletContext['channels'].keySet()])
@@ -60,9 +67,6 @@ class ChatController {
 //		render (action: "list", view: "list")
 //	}
 	
-//	def chat = {
-//		render(view: "chat", model: [chatName: params.chatName])
-//	}
 	
 //	def pullMessages = {
 //		def messages = session.chatClient[params.chatName].getLastMessages(30000)

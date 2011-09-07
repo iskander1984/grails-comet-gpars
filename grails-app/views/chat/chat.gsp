@@ -7,7 +7,8 @@
 <gcomet:includes/>
 <script type="text/javascript">
 	function updateChat(data){
-		$("#chatWindow").val($("#chatWindow").val() + '\n' + data);
+		var state = $.parseJSON(data);
+		$("#chatWindow").val($("#chatWindow").val() + '\n' + state.login + ' - ' + state.message);
 	}
 	function clearChatMessageBox(){
 		$("#chatMessage").val("");
@@ -24,7 +25,6 @@
 		url="[controller:'chat',action:'sendMessage']"
 		onSuccess="clearChatMessageBox()"
 		before="if (!\$('#chatMessage').val()) {return false;}">
-		<g:hiddenField name="chatName" value="${chatName}" />
 		<input type="text" name="chatMessage" id="chatMessage" />&nbsp;
 			<input type="submit" value="Send" />
 	</g:formRemote>

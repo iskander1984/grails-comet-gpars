@@ -2,32 +2,29 @@ function GCometComponent(id, updateHandler){
 	this.id = id;
 	this.updateHandler = updateHandler;
 	this.version = 0;
-	
-	function update(version, changeSet){
-		this.version = version;
-		this.updateHandler(changeSet);
-	}
+}
+
+GCometComponent.prototype.update = function(version, changeSet){
+	this.version = version;
+	eval(this.updateHandler + "('" + changeSet + "')");
 }
 
 var components = new Array()
 
 function longPoolRequest(){
-	$.ajax({
-		url: "pullMessages",
-		success: function(data){
+	$.getJSON(
+		'pullMessages',
+		function(data){
 			updateComponents(data);
 			longPoolRequest();
 		}
-	});
+	);
 }
 
 function updateComponents(data){
-	var changes = $.parseJSON(data);
-	$.each(changes, function(index, value) {
-		var currentComponentId = value;
-		var currentVersion = value.version;
-		var changeSet = value.data;
-		components[currentComponentId].update(currentVersion, changeSet);
+	if (!data) return;
+	$.each(data, function(index, value) {
+		components[0].update(1, $.toJSON(value.storage));
 	}
 	);
 }

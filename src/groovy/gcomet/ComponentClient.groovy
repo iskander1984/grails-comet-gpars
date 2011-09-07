@@ -1,10 +1,13 @@
 package gcomet
 
 import groovyx.gpars.actor.DefaultActor
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.TimeUnit
+
 
 class ComponentClient extends DefaultActor {
 
-	private states = new LinkedBlockingQueue<ComponentState>()
+	private Queue states = new LinkedBlockingQueue<ComponentState>()
 	
 	void act() {
 		loop {
@@ -15,7 +18,7 @@ class ComponentClient extends DefaultActor {
 	}
 
 	def getStates(timeout) {
-		def result = new ArrayList<String>()
+		def result = new ArrayList<ComponentState>()
 		if (states.size() > 0) {
 			while (states.size() > 0) {
 				result << states.take()
