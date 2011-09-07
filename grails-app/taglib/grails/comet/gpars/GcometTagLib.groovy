@@ -4,7 +4,7 @@ class GcometTagLib {
 	static namespace = "gcomet"
 	
 	def includes = { attrs, body ->
-		out << "<script type=\"text/javascript\" src=\"${g.resource(dir: 'js', plugin: 'gcomet', file: 'gcomet.js')}\"></script>" 
+		out << "<script type=\"text/javascript\" src=\"/grails-comet-gpars/js/gcomet.js\"></script>" 
 	}
 	
 	def component = { attrs, body ->

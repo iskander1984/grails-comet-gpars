@@ -13,7 +13,7 @@ var components = new Array()
 
 function longPoolRequest(){
 	$.ajax({
-		url: "retrieveChangeSet",
+		url: "pullMessages",
 		success: function(data){
 			updateComponents(data);
 			longPoolRequest();
@@ -35,9 +35,9 @@ function updateComponents(data){
 function registerGCometComponents(){
 	var components = $("span[type='gcomet']");
 	$.each(components, function(index, value){
-		var id = value.attr("id");
-		var updateHandler = value.attr("updateHandler");
-		registerComponent(id, updateHandler);
+		var id = $(value).attr("id");
+		var updateHandler = $(value).attr("updateHandler");
+		registerGCometComponent(id, updateHandler);
 	});
 }
 
